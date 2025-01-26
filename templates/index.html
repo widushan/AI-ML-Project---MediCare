@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Add Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  </head>
+
+  <style>
+
+    .logo{
+        width: 100px;
+        height: 100px;
+        color: black;
+        margin-top: 0;
+        margin-left: 2;
+        
+    }
+    .myimg{
+        width: 110px;
+        height: 100px;
+        border: 2px solid black;
+        border-radius: 50px;
+    }
+    .navbar-brand{
+        margin-left: 20px;
+    }
+    
+
+  </style>
+  <body>
+
+    <!-- Navbar -->
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <div class="logo">
+                <img class="myimg" src="{{url_for('static',filename='img.png')}}" alt="">
+            </div>
+          <a class="navbar-brand" href="#">Health Center</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/index">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/about">About</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/blog">Blog</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/contact">Contact</a>
+              </li>
+            </ul>
+            <form class="d-flex" role="search">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+          </div>
+        </div>
+      </nav>
+    
+    
+
+
+    <h1 class="text-center">Health Care Center</h1>
+
+    
+    
+    
+    
+    
+
+    <div class="container mt-200 my-4" style="background: black; color: white; border-radius: 15px; padding: 50px;">
+        <form action="/predict" method="post">
+            <div class="form-group">
+                <label for="symptoms">Type Symptoms</label>
+                <input type="text" class="form-control" name="symptoms" placeholder="Use Symptoms Like Shivering , Vomiting , Itching , Coughing">
+                <br>
+
+                <button class="btn btn-danger" style="width: 100%; padding: 14px; margin-bottom: 5px;">Recommendations</button>
+
+            </div>
+        </form>
+    </div>
+
+    {% if predicted_disease %}
+
+
+    
+
+    <h1 class="text-center mt-4 my-4">Our AI Medical Results</h1>
+    <div class="container">
+        <div class="result-container">
+            <button class="toggle-button" data-bs-toggle="modal" data-bs-target="#diseaseModal" style="padding:4px;  margin: 5px 40px 5px 0; font-size:20px;font-weight:bold; width:140px; border-radius:5px; background:#F39334;color:black;">Disease</button>
+            <button class="toggle-button" data-bs-toggle="modal" data-bs-target="#descriptionModal" style="padding:4px; margin: 5px 40px 5px 0; font-size:20px;font-weight:bold; width:140px; border-radius:5px; background:#268AF3 ;color:black;">Description</button>
+            <button class="toggle-button" data-bs-toggle="modal" data-bs-target="#precautionModal" style="padding:4px; margin: 5px 40px 5px 0; font-size:20px;font-weight:bold; width:140px; border-radius:5px; background:#F371F9 ;color:black;">Precaution</button>
+            <button class="toggle-button" data-bs-toggle="modal" data-bs-target="#medicationsModal" style="padding:4px; margin: 5px 40px 5px 0; font-size:20px;font-weight:bold; width:140px;border-radius:5px; background:#F8576F ;color:black;">Medications</button>
+            <button class="toggle-button" data-bs-toggle="modal" data-bs-target="#workoutsModal" style="padding:4px; margin: 5px 40px 5px 0; font-size:20px;font-weight:bold; width:140px; border-radius:5px; background:#99F741 ;color:black;">Workouts</button>
+            <button class="toggle-button" data-bs-toggle="modal" data-bs-target="#dietsModal" style="padding:4px; margin: 5px 40px 5px 0; font-size:20px;font-weight:bold; width:140px; border-radius:5px; background:#E5E23D;color:black;">Diets</button>
+        </div>
+    </div>
+
+    {% endif %}
+
+    <!-- Disease Modal -->
+    <div class="modal fade" id="diseaseModal" tabindex="-1" aria-labelledby="diseaseModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #020606; color:white;"> <!-- Set header background color inline -->
+                    <h5 class="modal-title" id="diseaseModalLabel">Predicted Disease</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="background-color: modal-body-color"> <!-- Set modal body background color inline -->
+                    <p>{{ predicted_disease }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Description Modal -->
+    <div class="modal fade" id="descriptionModal" tabindex="-1" aria-labelledby="descriptionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #020606; color:white;">
+                    <h5 class="modal-title" id="descriptionModalLabel">Description</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>{{ dis_des }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Precaution Modal -->
+    <div class="modal fade" id="precautionModal" tabindex="-1" aria-labelledby="precautionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #020606; color:white;">
+                    <h5 class="modal-title" id="precautionModalLabel">Precaution</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        {% for i in dis_pre %}
+                            <li>{{ i }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- Medications Modal -->
+    <div class="modal fade" id="medicationsModal" tabindex="-1" aria-labelledby="medicationsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #020606; color:white;">
+                    <h5 class="modal-title" id="medicationsModalLabel">Medications</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        {% for i in dis_med %}
+                            <li>{{ i }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Workouts Modal -->
+    <div class="modal fade" id="workoutsModal" tabindex="-1" aria-labelledby="workoutsModalLabel" aria-hidden="true">
+        <div class="modal-dialog" >
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #020606; color:white;">
+                    <h5 class="modal-title" id="workoutsModalLabel">Workouts</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        {% for i in dis_wrkout %}
+                            <li>{{ i }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Diets Modal -->
+    <div class="modal fade" id="dietsModal" tabindex="-1" aria-labelledby="dietsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #020606; color:white;">
+                    <h5 class="modal-title" id="dietsModalLabel">Diets</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        {% for i in dis_die %}
+                            <li>{{ i }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="container mt-4 my-4" style="background-color: #f8f9fa; border-radius: 15px; padding: 20px; color: black; position:relative">
+        <h5 class="text-center">Suggestions for Symptoms</h5>
+        <div class="row">
+            <div class="col-md-12">
+                <p>
+                    Abdominal pain, Acidity, Back pain, Breathlessness, Chest pain, Cold hands and feet, Cough, Drying and tingling lips, Fast heart rate, Headache, High fever, Itching, Knee pain, Lack of concentration, Neck pain, Red spots over body, Redness of eyes, Shivering, Skin rash, Stomach pain
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+    <footer class="bg-dark text-white pt-5 pb-4 position-fixed w-100 bottom-0">
+        <div class="container">
+          <div class="row">
+      
+            <!-- Logo and Contact Information -->
+            <div class="col-lg-4 col-md-6 mb-4">
+              <div class="d-flex align-items-center mb-3">
+                <img src="{{url_for('static',filename='img.png')}}" class="me-2" style="width: 60px; height: 60px; border-radius: 50%; border: 2px solid white;" alt="Logo">
+                <h5 class="mb-0">Health Center</h5>
+              </div>
+              <p class="text-white-50">Address: 123 Wellness Avenue, Healthy City, USA</p>
+              <p class="text-white-50">Phone: +1 (123) 456-7890</p>
+              <p class="text-white-50">Email: info@healthcarewebsite.com</p>
+            </div>
+      
+            <!-- Quick Links -->
+            <div class="col-lg-2 col-md-6 mb-4">
+              <h5 class="text-uppercase">Quick Links</h5>
+              <ul class="list-unstyled">
+                <li><a href="/about" class="text-white-50 text-decoration-none">About Us</a></li>
+                <li><a href="/services" class="text-white-50 text-decoration-none">Services</a></li>
+                <li><a href="/blog" class="text-white-50 text-decoration-none">Blog</a></li>
+                <li><a href="/faqs" class="text-white-50 text-decoration-none">FAQs</a></li>
+                <li><a href="/careers" class="text-white-50 text-decoration-none">Careers</a></li>
+              </ul>
+            </div>
+      
+            <!-- Important Information -->
+            <div class="col-lg-3 col-md-6 mb-4">
+              <h5 class="text-uppercase">Important Information</h5>
+              <ul class="list-unstyled">
+                <li><a href="/privacy-policy" class="text-white-50 text-decoration-none">Privacy Policy</a></li>
+                <li><a href="/terms" class="text-white-50 text-decoration-none">Terms of Service</a></li>
+                <li><a href="/patient-rights" class="text-white-50 text-decoration-none">Patient Rights & Responsibilities</a></li>
+                <li><a href="/accessibility" class="text-white-50 text-decoration-none">Accessibility Statement</a></li>
+              </ul>
+            </div>
+      
+            <!-- Social Media and Newsletter -->
+            <div class="col-lg-3 col-md-6 mb-4">
+              <h5 class="text-uppercase">Stay Connected</h5>
+              <div class="d-flex mb-3">
+                <a href="#" class="text-white-50 text-decoration-none me-3"><i class="bi bi-facebook fs-5"></i></a>
+                <a href="#" class="text-white-50 text-decoration-none me-3"><i class="bi bi-instagram fs-5"></i></a>
+                <a href="#" class="text-white-50 text-decoration-none me-3"><i class="bi bi-twitter fs-5"></i></a>
+                <a href="#" class="text-white-50 text-decoration-none"><i class="bi bi-linkedin fs-5"></i></a>
+              </div>
+              <h6 class="text-uppercase">Newsletter Subscription</h6>
+              <form action="/subscribe" method="post" class="d-flex">
+                <input type="email" class="form-control me-2" placeholder="Enter your email" name="email" required>
+                <button class="btn btn-success">Subscribe</button>
+              </form>
+            </div>
+      
+          </div>
+          <hr class="bg-white">
+          <div class="text-center">
+            <p class="mb-0">&copy; 2025 Health Center. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  </body>
+</html>
